@@ -1,6 +1,7 @@
 import {Box,styled} from '@mui/material';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import {Controlled as CodeMirror} from 'react-codemirror2'
+import { useState } from 'react';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
@@ -35,8 +36,13 @@ const Header=styled(Box)({
 
 
 const Editor=({heading,icon,color,value,onChange})=>{
+
+    const[open,setOpen]=useState(true)
+    function handleChange(editor,data,value){
+        onChange(value)
+    }
     return (
-        <Container>
+        <Container style={open?null:{flexGrow:0}}>
             <Header>
                 <Heading>
                     <Box component="span" 
@@ -56,15 +62,22 @@ const Editor=({heading,icon,color,value,onChange})=>{
                     </Box>
                     {heading}
                 </Heading>
-                <CloseFullscreenIcon/>
+                <CloseFullscreenIcon
+                fontSize='small'
+                style={{alignSelf:"center"}} 
+                onClick={()=>{setOpen(prevState=>!prevState)}}
+                />
             </Header>
-            <CodeMirror 
-            className='controlled-editor'
-            options={{
-                theme:'material',
-                lineNumbers: true,
-                value:{value}
-            }}
+            <CodeMirror
+                onBeforeChange={handleChange}
+                value={value}
+                className="controlled-editor"
+                options={{
+                    lineWrapping: true,
+                    lint: true,
+                    lineNumbers: true,
+                    theme: 'material'
+                }}
             />
         </Container>
     )

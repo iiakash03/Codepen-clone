@@ -4,14 +4,14 @@ import { useContext } from "react"
 
 import { DataContext } from "../context/DataProvider"
 
+const Container=styled(Box)({
+    display:"flex",
+    background:"#060606"  
+})
+
 const Code=()=>{
 
-    const[html,css,js,setHtml,setCss,setJs]=useContext(DataContext)
-
-    const Container=styled(Box)({
-        display:"flex",
-        background:"#060606",
-    })
+    const{html,css,js,setHtml,setCss,setJs}=useContext(DataContext)
     return(
         <Container>
             <Editor
